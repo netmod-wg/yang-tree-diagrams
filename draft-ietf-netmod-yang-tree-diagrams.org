@@ -1,0 +1,105 @@
+# -*- org -*-
+
+This document captures the current syntax used in YANG module Tree
+Diagrams.  The purpose of the document is to provide a single location
+for this definition.  This syntax may be updated from time to time
+based on the evolution of the YANG language.
+
+* Introduction
+
+YANG Tree Diagrams were first published in ^RFC7223^.  Such diagrams
+are commonly used to provided a simplified graphical representation of
+a data model and can be automatically generated via tools such as
+"pyang".  (See <https://github.com/mbj4668/pyang>).  This document
+provides the syntax used in YANG Tree Diagrams.  It is expected that
+this document will be updated or replaced as changes to the YANG
+language, see ^RFC7950^, necessitate.
+
+Today's Common practice is include the definition of the syntax used
+to represent a YANG module in every document that provides a tree
+diagram.  This practice has several disadvantages and the purpose of
+the document is to provide a single location for this definition.  It
+is not the intent of this document to restrict future changes, but
+rather to ensure such changes are easily identified and suitably
+agreed upon.
+
+An example tree diagram can be found in ^RFC7223^ Section 3.  A
+portion of which follows:
+
+  +--rw interfaces
+  |  +--rw interface* [name]
+  |     +--rw name                        string
+  |     +--rw description?                string
+  |     +--rw type                        identityref
+  |     +--rw enabled?                    boolean
+  |     +--rw link-up-down-trap-enable?   enumeration
+
+The remainder of this document contains YANG Tree Diagram syntax
+based on output from pyang version 1.7.1.
+
+* Tree Diagram Syntax
+
+This section provides the meaning of the symbols used in YANG Tree
+diagrams.
+
+Each node in a YANG module is printed as:
+
+<status> <flags> <name> <opts> <type> <if-features>
+
+  <status> is one of:
+    +  for current
+    x  for deprecated
+    o  for obsolete
+
+  <flags> is one of:
+    rw  for configuration data
+    ro  for non-configuration data
+    -x  for rpcs and actions
+    -n  for notifications
+
+  <name> is the name of the node
+    (<name>) means that the node is a choice node
+   :(<name>) means that the node is a case node
+
+   If the node is augmented into the tree from another module, its
+   name is printed as <prefix>:<name>.
+
+  <opts> is one of:
+    ?  for an optional leaf, choice, anydata or anyxml
+    !  for a presence container
+    *  for a leaf-list or list
+    [<keys>] for a list's keys
+
+  <type> is the name of the type for leafs and leaf-lists
+
+    If the type is a leafref, the type is printed as "-> TARGET",
+    where TARGET is either the leafref path, with prefixed removed
+    if possible.
+
+  <if-features> is the list of features this node depends on,
+  printed within curly brackets and a question mark "{...}?"
+
+* Next Steps
+
+Authors' note: This draft is currently a bit rough.  The next/future
+version is expected to add text covering different types of trees and
+when to use them; for example, complete module trees, subtrees, trees
+for groupings etc.  Maybe also how to deal with the limited line
+lengths in RFCs.
+
+* IANA Considerations
+
+There are no IANA requests or assignments included in this document.
+
+
+
+{{document:
+    name ;
+    ipr trust200902;
+    category std;
+    references references.xml;
+    title "YANG Tree Diagrams";
+    abbreviation "YANG Tree Diagrams";
+    contributor "author:Martin Bjorklund:Tail-f Systems:mbj@tail-f.com";
+    contributor "editor:Lou Berger:LabN Consulting, L.L.C.:lberger@labn.net";
+}}
