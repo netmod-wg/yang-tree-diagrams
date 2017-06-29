@@ -56,7 +56,7 @@ Each node in a YANG module is printed as:
     ro  for non-configuration data
     -x  for rpcs and actions
     -n  for notifications
-    M   for schema mount points
+    mp   for schema mount points
 
   <name> is the name of the node
     (<name>) means that the node is a choice node
@@ -70,7 +70,9 @@ Each node in a YANG module is printed as:
     !  for a presence container
     *  for a leaf-list or list
     [<keys>] for a list's keys
-    @  for a schema mount point
+    /  for a mounted module
+    @  for a module made available via a schema mount
+       parent reference
 
   <type> is the name of the type for leafs and leaf-lists
 
@@ -124,7 +126,7 @@ example:
               +--rw name           string
               +--rw managed?       boolean
               +--rw description?   string
-              +--M  root@          yangmnt:mount-point
+              +--mp root
 
 Note that a mount point definition alone is not sufficient to identify
 if a mount point configuration or for non-configuration data.  This is
@@ -145,11 +147,11 @@ the prior example with YANG Library and Interfaces modules mounted and
               +--rw name           string
               +--rw managed?       boolean
               +--rw description?   string
-              +--M  root@          yangmnt:mount-point
-                 +--rw ietf-yang-library
+              +--mp root
+                 +--rw ietf-yang-library/
                  |  +--ro modules-state
                  |     +-- ...
-                 +--rw ietf-interfaces
+                 +--rw ietf-interfaces/
                     +--rw interfaces
                     |  +-- ...
                     +--ro interfaces-state
@@ -164,11 +166,11 @@ false:
               +--rw name           string
               +--rw managed?       boolean
               +--rw description?   string
-              +--M  root@          yangmnt:mount-point
-                 +--ro ietf-yang-library
+              +--mp root
+                 +--ro ietf-yang-library/
                  |  +--ro modules-state
                  |     +-- ...
-                 +--ro ietf-interfaces
+                 +--ro ietf-interfaces/
                     +--ro interfaces
                     |  +-- ...
                     +--ro interfaces-state
