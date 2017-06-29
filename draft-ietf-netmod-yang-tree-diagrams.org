@@ -15,7 +15,7 @@ provides the syntax used in YANG Tree Diagrams.  It is expected that
 this document will be updated or replaced as changes to the YANG
 language, see ^RFC7950^, necessitate.
 
-Today's Common practice is include the definition of the syntax used
+Today's common practice is include the definition of the syntax used
 to represent a YANG module in every document that provides a tree
 diagram.  This practice has several disadvantages and the purpose of
 the document is to provide a single location for this definition.  It
@@ -41,6 +41,83 @@ based on output from pyang version 1.7.1.
 
 This section provides the meaning of the symbols used in YANG Tree
 diagrams.
+
+A full tree diagram of a module represents all elements.  It includes
+the name of the module and sections for top level module statements
+(typically containers), augmentations, rpcs and notifications all
+identified under a module statement.  Module trees may be included in a
+document as a whole, by one or more sections, or even subsets of nodes.
+
+A module is identified by "module:" followed the module-name. Top
+level module statements are listed immediately following, offset by 4
+spaces.  Augmentations are listed next, offset by 2 spaces and
+identified by the keyword "augment" followed by the augment target node
+and a colon (':') character.  This is followed by, RPCs which are
+identified by "rpcs:" and are also offset by 2 spaces.  Notifications
+are last and are identified by "notifications:" and are also offset by 2
+spaces.
+
+The relative organization of each section is provided using a text-based
+format that is typical of a file system directory tree display command.
+Each node in the tree is prefaces with '+--'.  Schema nodes that are
+children of another node are offset from the parent by 3 spaces.  Schema
+peer nodes separated are listed with the same space offset and, when
+separated by lines, linked via a pipe ('|') character.
+
+The full format, including spacing conventions is:
+
+module: <module-name>
+  +--<node>
+  |  +--<node>
+  |     +--<node>
+  +--<node>
+     +--<node>
+        +--<node>
+  augment <target-node>:
+    +--<node>
+       +--<node>
+       +--<node>
+          +--<node>
+
+  rpcs:
+    +--<node>
+    +--<node>
+
+  notifications:
+    +--<node>
+       +--<node>
+       |  +--<node>
+       +--<node>
+
+** Submodules
+
+Submodules are represented in the same fashion as modules, but are
+identified by "submodule:" followed the (sub)module-name.  For example:
+
+submodule: <module-name>
+  +--<node>
+  |  +--<node>
+  |     +--<node>
+
+** Groupings
+
+Nodes within a used grouping are expanded as if the nodes were defined
+at the location of the uses statement.
+
+** Collapsed Node Representation
+
+At times when the composition of the nodes within a module schema are
+not important in the context of the presented tree, peer nodes and their
+children can be collapsed using the notation '...' in place of the
+text lines used to represent the summarized nodes.  For example:
+
+  +--<node>
+  |  ...
+  +--<node>
+     +--<node>
+        +--<node>
+
+** Node Representation
 
 Each node in a YANG module is printed as:
 
@@ -82,6 +159,10 @@ Each node in a YANG module is printed as:
 
   <if-features> is the list of features this node depends on,
   printed within curly brackets and a question mark "{...}?"
+
+** Extensions
+
+TBD
 
 * Usage Guidelines For RFCs
 
