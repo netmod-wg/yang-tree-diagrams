@@ -198,16 +198,17 @@ mechanism that allows for mounting one data model consisting of any
 number of YANG modules at a specified location of another (parent)
 schema.  Modules containing mount points will identify mount points by
 name using the mount-point extension. These mount-points should be
-identified, as indicated above using the 'mp' flag and '@' option.  For
-example:
+identified, as indicated above using the 'mp' flag.  For example:
 
-    module: ietf-logical-network-element
-        +--rw logical-network-elements
-           +--rw logical-network-element* [name]
-              +--rw name           string
-              +--rw managed?       boolean
-              +--rw description?   string
-              +--mp root
+    module: ietf-network-instance
+      +--rw network-instances
+         +--rw network-instance* [name]
+            +--rw name           string
+            +--rw enabled?       boolean
+            +--rw description?   string
+            +--rw (ni-type)?
+               +--:(l3vpn)
+                  +--mp vrf-root
 
 Note that a mount point definition alone is not sufficient to identify
 if a mount point configuration or for non-configuration data.  This is
@@ -218,44 +219,34 @@ In describing the intended use of a module containing a mount point, it
 is helpful to show how the mount point would look with mounted modules.
 In such cases, the mount point should be treated much like a container
 that uses a grouping.  The flags should also be set based on the
-'config' leaf mentioned above.  For example, the following represents
-the prior example with YANG Library and Interfaces modules mounted and
+'config' leaf mentioned above, and the mount realted options indicated
+above should be shown.  For example, the following represents
+the prior example with YANG Routing and OSPF modules mounted, YANG
+Interface module nodes accessible via a parent-reference, and
 'config' indicating true:
 
-    module: ietf-logical-network-element
-        +--rw logical-network-elements
-           +--rw logical-network-element* [name]
-              +--rw name           string
-              +--rw managed?       boolean
-              +--rw description?   string
-              +--mp root
-                 +--rw ietf-yang-library /
-                 |  +--ro modules-state
-                 |     +-- ...
-                 +--rw ietf-interfaces /
-                    +--rw interfaces
-                    |  +-- ...
-                    +--ro interfaces-state
-                       +-- ...
+    module: ietf-network-instance
+      +--rw network-instances
+         +--rw network-instance* [name]
+            +--rw name           string
+            +--rw enabled?       boolean
+            +--rw description?   string
+            +--rw (ni-type)?
+               +--:(l3vpn)
+                  +--mp vrf-root
+                     +--ro rt:routing-state/
+                     |  ...
+                     +--rw rt:routing/
+                     |  ...
+                     +--ro if:interfaces@
+                     |  ...
+                     +--ro if:interfaces-state@
+                        ...
 
-The following represents the same schema, but with  'config' indicating
-false:
+The with 'config' indicating false, the only change would be to the flag
+on the rt:routing node:
 
-    module: ietf-logical-network-element
-        +--rw logical-network-elements
-           +--rw logical-network-element* [name]
-              +--rw name           string
-              +--rw managed?       boolean
-              +--rw description?   string
-              +--mp root
-                 +--ro ietf-yang-library /
-                 |  +--ro modules-state
-                 |     +-- ...
-                 +--ro ietf-interfaces /
-                    +--ro interfaces
-                    |  +-- ...
-                    +--ro interfaces-state
-                       +-- ...
+                     +--ro rt:routing/
 
 * IANA Considerations
 
