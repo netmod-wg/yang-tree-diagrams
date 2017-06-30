@@ -206,9 +206,10 @@ identified, as indicated above using the 'mp' flag.  For example:
             +--rw name           string
             +--rw enabled?       boolean
             +--rw description?   string
-            +--rw (ni-type)?
-               +--:(l3vpn)
-                  +--mp vrf-root
+	    +--rw (ni-type)?
+	    +--rw (root-type)?
+	       +--:(vrf-root)
+	       |  +--mp vrf-root?
 
 Note that a mount point definition alone is not sufficient to identify
 if a mount point configuration or for non-configuration data.  This is
@@ -232,8 +233,9 @@ Interface module nodes accessible via a parent-reference, and
             +--rw enabled?       boolean
             +--rw description?   string
             +--rw (ni-type)?
-               +--:(l3vpn)
-                  +--mp vrf-root
+	    +--rw (root-type)?
+	       +--:(vrf-root)
+                  +--mp vrf-root?
                      +--ro rt:routing-state/
                      |  ...
                      +--rw rt:routing/
