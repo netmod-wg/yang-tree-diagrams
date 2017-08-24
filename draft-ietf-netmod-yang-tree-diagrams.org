@@ -48,21 +48,29 @@ the name of the module and sections for top level module statements
 identified under a module statement.  Module trees may be included in a
 document as a whole, by one or more sections, or even subsets of nodes.
 
-A module is identified by "module:" followed the module-name. Top
-level module statements are listed immediately following, offset by 4
-spaces.  Augmentations are listed next, offset by 2 spaces and
-identified by the keyword "augment" followed by the augment target node
-and a colon (':') character.  This is followed by, RPCs which are
-identified by "rpcs:" and are also offset by 2 spaces.  Notifications
-are last and are identified by "notifications:" and are also offset by 2
-spaces.
+A module is identified by "module:" followed the module-name.  This is
+followed by one or more sections, in order:
+
++ The top-level data nodes defined in the module, offset by 4 spaces.
++ Augmentations, offset by 2 spaces and identified by the keyword
+  "augment" followed by the augment target node and a colon (':')
+  character.
++ RPCs, offset by 2 spaces and identified by "rpcs:".
++ Notifications, offset by 2 spaces and identified by
+  "notifications:".
++ Groupings, offset by 2 spaces, and identified by the keyword
+  "grouping" followed by the name of the grouping and a colon (':')
+  character.
++ yang-data, offset by 2 spaces, and identified by the keyword
+  "yang-data" followed by the name of the yang-data structure and a
+  colon (':') character.
 
 The relative organization of each section is provided using a text-based
 format that is typical of a file system directory tree display command.
 Each node in the tree is prefaces with '+--'.  Schema nodes that are
 children of another node are offset from the parent by 3 spaces.  Schema
 peer nodes separated are listed with the same space offset and, when
-separated by lines, linked via a pipe ('|') character.
+separated by lines, linked via a vertical bar ('|') character.
 
 The full format, including spacing conventions is:
 
@@ -73,21 +81,44 @@ module: <module-name>
   +--<node>
      +--<node>
         +--<node>
+
   augment <target-node>:
     +--<node>
        +--<node>
        +--<node>
           +--<node>
+  augment <target-node>:
+    +--<node>
 
   rpcs:
-    +--<node>
-    +--<node>
+    +--<rpc-node>
+    +--<rpc-node>
+       +--<node>
+       |  +--<node>
+       +--<node>
 
   notifications:
+    +--<notification-node>
+    +--<notification-node>
+       +--<node>
+       |  +--<node>
+       +--<node>
+
+  grouping <grouping-name>:
     +--<node>
        +--<node>
        |  +--<node>
        +--<node>
+  grouping <grouping-name>:
+    +--<node>
+
+  yang-data <yang-data-name>:
+    +--<node>
+       +--<node>
+       |  +--<node>
+       +--<node>
+  yang-data <yang-data-name>:
+    +--<node>
 
 ** Submodules
 
@@ -104,6 +135,13 @@ submodule: <module-name>
 Nodes within a used grouping are expanded as if the nodes were defined
 at the location of the uses statement.
 
+Groupings may optionally be present in the "groupings" section.
+
+** yang-data
+
+If the module defines a "yang-data" structure ^RFC8040^, these
+structures may optionally be present in the "yang-data" section.
+
 ** Collapsed Node Representation
 
 At times when the composition of the nodes within a module schema are
@@ -117,52 +155,54 @@ text lines used to represent the summarized nodes.  For example:
      +--<node>
         +--<node>
 
+** Comments
+
+Single line comments, starting with "//" and ending at the end of the
+line, may be used in the tree notation.
+
 ** Node Representation
 
 Each node in a YANG module is printed as:
 
-<status> <flags> <name> <opts> <type> <if-features>
+  <status> <flags> <name> <opts> <type> <if-features>
 
-  <status> is one of:
-    +  for current
-    x  for deprecated
-    o  for obsolete
+    <status> is one of:
 
-  <flags> is one of:
-    rw  for configuration data
-    ro  for non-configuration data
-    -x  for rpcs and actions
-    -n  for notifications
-    mp   for schema mount points
+      +  for current
+      x  for deprecated
+      o  for obsolete
 
-  <name> is the name of the node
-    (<name>) means that the node is a choice node
-   :(<name>) means that the node is a case node
+    <flags> is one of:
+      rw  for configuration data
+      ro  for non-configuration data
+      -x  for rpcs and actions
+      -n  for notifications
+      mp   for schema mount points
 
-   If the node is augmented into the tree from another module, its
-   name is printed as <prefix>:<name>.
+    <name> is the name of the node
+      (<name>) means that the node is a choice node
+     :(<name>) means that the node is a case node
 
-  <opts> is one of:
-    ?  for an optional leaf, choice, anydata or anyxml
-    !  for a presence container
-    *  for a leaf-list or list
-    [<keys>] for a list's keys
-    /  for a mounted module
-    @  for a node made available via a schema mount
-       parent reference
+      If the node is augmented into the tree from another module,
+      its name is printed as <prefix>:<name>.
 
-  <type> is the name of the type for leafs and leaf-lists
+    <opts> is one of:
+      ?  for an optional leaf, choice, anydata or anyxml
+      !  for a presence container
+      *  for a leaf-list or list
+      [<keys>] for a list's keys
+      /  for a mounted node directly under a mount point
+      @  for a node made available via a schema mount
+         parent reference
 
-    If the type is a leafref, the type is printed as "-> TARGET",
-    where TARGET is either the leafref path, with prefixed removed
-    if possible.
+    <type> is the name of the type for leafs and leaf-lists
 
-  <if-features> is the list of features this node depends on,
-  printed within curly brackets and a question mark "{...}?"
+      If the type is a leafref, the type is printed as "-> TARGET",
+      where TARGET is either the leafref path, with prefixed removed
+      if possible.
 
-** Extensions
-
-TBD
+    <if-features> is the list of features this node depends on,
+      printed within curly brackets and a question mark "{...}?"
 
 * Usage Guidelines For RFCs
 
@@ -206,10 +246,10 @@ identified, as indicated above using the 'mp' flag.  For example:
             +--rw name           string
             +--rw enabled?       boolean
             +--rw description?   string
-	    +--rw (ni-type)?
-	    +--rw (root-type)?
-	       +--:(vrf-root)
-	       |  +--mp vrf-root?
+            +--rw (ni-type)?
+            +--rw (root-type)?
+               +--:(vrf-root)
+               |  +--mp vrf-root?
 
 Note that a mount point definition alone is not sufficient to identify
 if a mount point configuration or for non-configuration data.  This is
@@ -233,8 +273,8 @@ Interface module nodes accessible via a parent-reference, and
             +--rw enabled?       boolean
             +--rw description?   string
             +--rw (ni-type)?
-	    +--rw (root-type)?
-	       +--:(vrf-root)
+            +--rw (root-type)?
+               +--:(vrf-root)
                   +--mp vrf-root?
                      +--ro rt:routing-state/
                      |  ...
