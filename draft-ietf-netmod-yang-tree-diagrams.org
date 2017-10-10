@@ -53,24 +53,24 @@ followed by one or more sections, in order:
 
 + The top-level data nodes defined in the module, offset by 4 spaces.
 + Augmentations, offset by 2 spaces and identified by the keyword
-  "augment" followed by the augment target node and a colon (':')
+  "augment" followed by the augment target node and a colon (":")
   character.
 + RPCs, offset by 2 spaces and identified by "rpcs:".
 + Notifications, offset by 2 spaces and identified by
   "notifications:".
 + Groupings, offset by 2 spaces, and identified by the keyword
-  "grouping" followed by the name of the grouping and a colon (':')
+  "grouping" followed by the name of the grouping and a colon (":")
   character.
 + yang-data, offset by 2 spaces, and identified by the keyword
   "yang-data" followed by the name of the yang-data structure and a
-  colon (':') character.
+  colon (":") character.
 
 The relative organization of each section is provided using a text-based
 format that is typical of a file system directory tree display command.
-Each node in the tree is prefaces with '+--'.  Schema nodes that are
+Each node in the tree is prefaces with "+--".  Schema nodes that are
 children of another node are offset from the parent by 3 spaces.  Schema
 peer nodes separated are listed with the same space offset and, when
-separated by lines, linked via a vertical bar ('|') character.
+separated by lines, linked via a vertical bar ("|") character.
 
 The full format, including spacing conventions is:
 
@@ -146,7 +146,7 @@ structures may optionally be present in the "yang-data" section.
 
 At times when the composition of the nodes within a module schema are
 not important in the context of the presented tree, peer nodes and their
-children can be collapsed using the notation '...' in place of the
+children can be collapsed using the notation "..." in place of the
 text lines used to represent the summarized nodes.  For example:
 
   +--<node>
@@ -223,7 +223,7 @@ characters. For example:
        +--ro module-set-id
                -> /modules-state/module-set-id
 
-The previously 'pyang' command can be helpful in producing such output,
+The previously "pyang" command can be helpful in producing such output,
 for example the above example was produced using:
 
   pyang -f tree --tree-line-length 50 < ietf-yang-library.yang
@@ -237,7 +237,7 @@ number of YANG modules at a specified location of another (parent)
 schema. Modules containing mount points will identify container or list
 nodes which are used as mount points by name using the "mount-point"
 extension. These mount points should be
-identified, as indicated above using the 'mp' flag.  For example:
+identified, as indicated above using the "mp" flag.  For example:
 
     module: ietf-network-instance
       +--rw network-instances
@@ -252,18 +252,18 @@ identified, as indicated above using the 'mp' flag.  For example:
 
 Note that a mount point definition alone is not sufficient to identify
 if a mounted modules are used for configuration or for non-configuration
-data.  This is determined by the yang-schema-mount module 'config' leaf
+data.  This is determined by the yang-schema-mount module "config" leaf
 associated with the specific mount point.
 
 In describing the intended use of a module containing a mount point, it
 is helpful to show how the mount point would look with mounted modules.
 In such cases, the mount point should be treated much like a container
 that uses a grouping.  The flags should also be set based on the
-'config' leaf mentioned above, and the mount realted options indicated
+"config" leaf mentioned above, and the mount realted options indicated
 above should be shown.  For example, the following represents
 the prior example with YANG Routing and OSPF modules mounted, YANG
 Interface module nodes accessible via a parent-reference, and
-'config' indicating true:
+"config" indicating true:
 
     module: ietf-network-instance
       +--rw network-instances
@@ -280,7 +280,7 @@ Interface module nodes accessible via a parent-reference, and
                      +--rw rt:routing/
                         ...
 
-The with 'config' indicating false, the only change would be to the flag
+The with "config" indicating false, the only change would be to the flag
 on the rt:routing node:
 
                      +--ro rt:routing/
