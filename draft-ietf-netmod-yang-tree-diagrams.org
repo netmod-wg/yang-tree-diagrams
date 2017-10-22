@@ -192,6 +192,7 @@ Each node in a YANG module is printed as:
       *  for a leaf-list or list
       [<keys>] for a list's keys
       /  for a top-level data node in a mounted module
+      @  for a top-level data node in a parent referenced module
 
     <type> is the name of the type for leafs and leaf-lists
 
@@ -314,9 +315,9 @@ via a parent-reference, and "config" indicating true:
                     |     +--rw ospf:ospf/
                     |        +--rw instance* [af]
                     |           ...
-                    +--ro if:interfaces
+                    +--ro if:interfaces@
                     |  ...
-                    +--ro if:interfaces-state
+                    +--ro if:interfaces-state@
                     |  ...
 
 A mount point definition alone is not sufficient to identify if a
