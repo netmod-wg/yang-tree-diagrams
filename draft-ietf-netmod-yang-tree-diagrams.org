@@ -177,7 +177,7 @@ Each node in a YANG module is printed as:
       ro  for non-configuration data
       -x  for rpcs and actions
       -n  for notifications
-      mp  for nodes containing schema mount points
+      mp  for nodes containing a "mount-point" extension statment
 
     <name> is the name of the node
       (<name>) means that the node is a choice node
@@ -191,7 +191,7 @@ Each node in a YANG module is printed as:
       !  for a presence container
       *  for a leaf-list or list
       [<keys>] for a list's keys
-      /  for a mounted node directly under a mount point
+      /  for a top-level data node in a mounted module
 
     <type> is the name of the type for leafs and leaf-lists
 
@@ -231,13 +231,19 @@ for example the above example was produced using:
 * YANG Schema Mount Tree Diagrams
 
 YANG Schema Mount is defined in ^I-D.ietf-netmod-schema-mount^ and
-warrants some specific discussion. Schema mount document is a generic
-mechanism that allows for mounting one data model consisting of any
-number of YANG modules at a specified location of another (parent)
-schema. Modules containing mount points will identify container or list
-nodes which are used as mount points by name using the "mount-point"
-extension. These mount points should be
-identified, as indicated above using the "mp" flag.  For example:
+warrants some specific discussion. Schema mount is a generic mechanism
+that allows for mounting of one or more data modules at a specified
+location of another (parent) schema. The specific location is referred
+to as a mount point, and any container or list node in a schema may
+serve as a mount point.  Mount points are identified via the inclusion
+of the "mount-point" extension statement as a substament under a
+container or list node. Mount point nodes are thus directly identified
+in a module schema definition and can identified in a tree diagrams
+as indicated above using the "mp" flag.
+
+In the following example taken from ^I-D.ietf-rtgwg-ni-model^,
+"vrf-root" is a container that includes the "mount-point" extension
+statement as part of its definition:
 
     module: ietf-network-instance
       +--rw network-instances
@@ -250,38 +256,76 @@ identified, as indicated above using the "mp" flag.  For example:
                +--:(vrf-root)
                |  +--mp vrf-root
 
-Note that a mount point definition alone is not sufficient to identify
-if a mounted modules are used for configuration or for non-configuration
-data.  This is determined by the yang-schema-mount module "config" leaf
-associated with the specific mount point.
+** Representation of Instance Data Trees
 
-In describing the intended use of a module containing a mount point, it
-is helpful to show how the mount point would look with mounted modules.
-In such cases, the mount point should be treated much like a container
-that uses a grouping.  The flags should also be set based on the
-"config" leaf mentioned above, and the mount realted options indicated
-above should be shown.  For example, the following represents
-the prior example with YANG Routing and OSPF modules mounted, YANG
-Interface module nodes accessible via a parent-reference, and
-"config" indicating true:
+The actual modules made available under a mount point is controlled by a
+server and is provided to clients.  This information is typically
+provide via the schema mount module defined in
+^I-D.ietf-netmod-schema-mount^.  The schema mount module supports
+exposure of both mounted schema and "parent-references".  Parent
+references are used for XPath evaluation within mounted modules and do
+not represent client-accessible paths; the referenced information is
+available to clients via the parent schema.  Schema mount also defines
+an "inline" type mount point where mounted modules are exposed via the
+YANG library module.
 
-    module: ietf-network-instance
-      +--rw network-instances
-         +--rw network-instance* [name]
-            +--rw name           string
-            +--rw enabled?       boolean
-            +--rw description?   string
-            +--rw (ni-type)?
-            +--rw (root-type)
-               +--:(vrf-root)
-                  +--mp vrf-root
-                     +--ro rt:routing-state/
-                     |  ...
-                     +--rw rt:routing/
-                        ...
+While the modules made available under a mount point are not specified
+in YANG modules that include mount points, the document defining the
+module will describe the intended use of the module and may identify
+both modules that will be mounted and parent modules that can be
+referenced by mounted modules.  An example of such a description can be
+found in ^I-D.ietf-rtgwg-ni-model^.  A specific implementation of a
+module containing mount points will also support a specific list of
+mounted and referenced modules.  In describing both intended use and
+actual implementations, it is helpful to show how mounted modules
+would be instantiated and referenced under a mount point using tree
+diagrams.
 
-The with "config" indicating false, the only change would be to the flag
-on the rt:routing node:
+In such diagrams, the mount point should be treated much like a
+container that uses a grouping.  The flags should also be set based on
+the "config" leaf mentioned above, and the mount realted options
+indicated above should be shown for the top level nodes in a mounted or
+referenced module.  The following example, taken from
+^I-D.ietf-rtgwg-ni-model^, represents the prior example with YANG
+Routing and OSPF modules mounted, YANG Interface module nodes accessible
+via a parent-reference, and "config" indicating true:
+
+   module: ietf-network-instance
+     +--rw network-instances
+        +--rw network-instance* [name]
+           +--rw name           string
+           +--rw enabled?       boolean
+           +--rw description?   string
+           +--rw (ni-type)?
+           +--rw (root-type)
+              +--:(vrf-root)
+                 +--mp vrf-root
+                    +--ro rt:routing-state/
+                    |  +--ro router-id?
+                    |  +--ro control-plane-protocols
+                    |     +--ro control-plane-protocol* [type name]
+                    |        +--ro ospf:ospf/
+                    |           +--ro instance* [af]
+                    |           ...
+                    +--rw rt:routing/
+                    |  +--rw router-id?
+                    |  +--rw control-plane-protocols
+                    |     +--rw control-plane-protocol* [type name]
+                    |     +--rw ospf:ospf/
+                    |        +--rw instance* [af]
+                    |           ...
+                    +--ro if:interfaces
+                    |  ...
+                    +--ro if:interfaces-state
+                    |  ...
+
+A mount point definition alone is not sufficient to identify if a
+mounted modules are used for configuration or for non-configuration
+data. This is determined by the yang-schema-mount module "config" leaf
+associated with the specific mount point and is indicated on the top
+level mounted nodes. For example in the above tree, when the "config"
+for the routing module indicates false, the only change would be to the
+flag on the rt:routing node:
 
                      +--ro rt:routing/
 

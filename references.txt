@@ -1,6 +1,7 @@
 {{references:
   title "Informative References";
   ietf-ref I-D.ietf-netmod-schema-mount;
+  ietf-ref I-D.ietf-rtgwg-ni-model;
   ietf-ref RFC7223;
   ietf-ref RFC7950;
   ietf-ref RFC8040;
