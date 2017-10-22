@@ -261,8 +261,8 @@ statement as part of its definition:
 
 The actual modules made available under a mount point is controlled by a
 server and is provided to clients.  This information is typically
-provide via the schema mount module defined in
-^I-D.ietf-netmod-schema-mount^.  The schema mount module supports
+provide via the Schema Mount module defined in
+^I-D.ietf-netmod-schema-mount^.  The Schema Mount module supports
 exposure of both mounted schema and "parent-references".  Parent
 references are used for XPath evaluation within mounted modules and do
 not represent client-accessible paths; the referenced information is
@@ -319,6 +319,10 @@ via a parent-reference, and "config" indicating true:
                     |  ...
                     +--ro if:interfaces-state@
                     |  ...
+
+It is worth highlighting that the OSPF module is an augmentation to the
+Routing module, but as it is listed in the Schema Mount module (or inline
+YANG library) its top level nodes are included in the tree diagram.
 
 A mount point definition alone is not sufficient to identify if a
 mounted modules are used for configuration or for non-configuration
