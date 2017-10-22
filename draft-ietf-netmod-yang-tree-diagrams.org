@@ -334,6 +334,10 @@ flag on the rt:routing node:
 
 There are no IANA requests or assignments included in this document.
 
+* Security Considerations
+
+There is no security impact related to the tree diagrams defined in this
+document.
 
 
 {{document:
