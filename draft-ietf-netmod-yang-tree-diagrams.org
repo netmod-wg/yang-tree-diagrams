@@ -229,6 +229,9 @@ for example the above example was produced using:
 
   pyang -f tree --tree-line-length 50 < ietf-yang-library.yang
 
+When a tree diagram is included as a figure in an Internet Draft or
+RFC, "--tree-line-length 69" works well.
+
 * YANG Schema Mount Tree Diagrams
 
 YANG Schema Mount is defined in ^I-D.ietf-netmod-schema-mount^ and
@@ -239,7 +242,7 @@ to as a mount point, and any container or list node in a schema may
 serve as a mount point.  Mount points are identified via the inclusion
 of the "mount-point" extension statement as a substament under a
 container or list node. Mount point nodes are thus directly identified
-in a module schema definition and can identified in a tree diagrams
+in a module schema definition and can be identified in a tree diagram
 as indicated above using the "mp" flag.
 
 In the following example taken from ^I-D.ietf-rtgwg-ni-model^,
@@ -261,7 +264,7 @@ statement as part of its definition:
 
 The actual modules made available under a mount point is controlled by a
 server and is provided to clients.  This information is typically
-provide via the Schema Mount module defined in
+provided via the Schema Mount module defined in
 ^I-D.ietf-netmod-schema-mount^.  The Schema Mount module supports
 exposure of both mounted schema and "parent-references".  Parent
 references are used for XPath evaluation within mounted modules and do
@@ -324,13 +327,13 @@ It is worth highlighting that the OSPF module is an augmentation to the
 Routing module, but as it is listed in the Schema Mount module (or inline
 YANG library) its top level nodes are included in the tree diagram.
 
-A mount point definition alone is not sufficient to identify if a
+A mount point definition alone is not sufficient to identify if the
 mounted modules are used for configuration or for non-configuration
-data. This is determined by the yang-schema-mount module "config" leaf
-associated with the specific mount point and is indicated on the top
-level mounted nodes. For example in the above tree, when the "config"
-for the routing module indicates false, the only change would be to the
-flag on the rt:routing node:
+data. This is determined by the "ietf-yang-schema-mount" module's
+"config" leaf associated with the specific mount point and is
+indicated on the top level mounted nodes. For example in the above
+tree, when the "config" for the routing module indicates false, the
+only change would be to the flag on the rt:routing node:
 
                      +--ro rt:routing/
 
