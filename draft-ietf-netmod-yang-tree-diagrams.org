@@ -308,14 +308,14 @@ via a parent-reference, and "config" indicating true:
                     |  +--ro router-id?
                     |  +--ro control-plane-protocols
                     |     +--ro control-plane-protocol* [type name]
-                    |        +--ro ospf:ospf/
+                    |        +--ro ospf:ospf
                     |           +--ro instance* [af]
                     |           ...
                     +--rw rt:routing/
                     |  +--rw router-id?
                     |  +--rw control-plane-protocols
                     |     +--rw control-plane-protocol* [type name]
-                    |     +--rw ospf:ospf/
+                    |     +--rw ospf:ospf
                     |        +--rw instance* [af]
                     |           ...
                     +--ro if:interfaces@
@@ -323,9 +323,9 @@ via a parent-reference, and "config" indicating true:
                     +--ro if:interfaces-state@
                     |  ...
 
-It is worth highlighting that the OSPF module is an augmentation to the
-Routing module, but as it is listed in the Schema Mount module (or inline
-YANG library) its top level nodes are included in the tree diagram.
+It is worth highlighting that the OSPF module augments the Routing
+module, and while it is listed in the Schema Mount module (or inline YANG
+library) there is no special mount-related notation in the tree diagram.
 
 A mount point definition alone is not sufficient to identify if the
 mounted modules are used for configuration or for non-configuration
