@@ -227,14 +227,19 @@ such output, for example the above example was produced using:
 When a tree diagram is included as a figure in an Internet Draft or
 RFC, "--tree-line-length 69" works well.
 
-** Large Diagrams
+** Long Diagrams
 
-If the complete tree diagram for a module becomes too large (spans
-several pages), the diagram can be split into several smaller
+As tree diagrams are intended to provide a simplified view of a module,
+diagrams longer than a page should generally be avoided.
+If the complete tree diagram for a module becomes too long,
+the diagram can be split into several smaller
 diagrams.  For example, it might be possible to have one diagram with
 the data node and another with all notifications.  If the data nodes
-tree is too large, it might be possible to split the diagram into
+tree is too long, it is also possible to split the diagram into
 smaller diagrams for different subtrees.
+When long diagrams are included in a document, authors should consider
+whether to include the long diagram in the main body of the document or
+in an appendix.
 
 An example of such a split can be found in ^RFC7407^, where section
 2.4 shows the diagram for "engine configuration":
