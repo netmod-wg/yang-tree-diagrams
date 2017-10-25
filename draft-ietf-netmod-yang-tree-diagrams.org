@@ -34,9 +34,6 @@ portion of which follows:
   |     +--rw enabled?                    boolean
   |     +--rw link-up-down-trap-enable?   enumeration
 
-The remainder of this document contains YANG Tree Diagram syntax
-based on output from pyang version 1.7.1.
-
 * Tree Diagram Syntax
 
 This section provides the meaning of the symbols used in YANG Tree
@@ -206,9 +203,7 @@ Each node in a YANG module is printed as:
 * Usage Guidelines For RFCs
 
 This section provides general guidelines related to the use of tree
-diagrams in RFCs.  This section covers [Authors' note: will cover]
-different types of trees and when to use them; for example, complete
-module trees, subtrees, trees for groupings etc.
+diagrams in RFCs.
 
 ** Wrapping Long Lines
 
@@ -224,13 +219,41 @@ characters. For example:
        +--ro module-set-id
                -> /modules-state/module-set-id
 
-The previously "pyang" command can be helpful in producing such output,
-for example the above example was produced using:
+The previously mentioned "pyang" command can be helpful in producing
+such output, for example the above example was produced using:
 
-  pyang -f tree --tree-line-length 50 < ietf-yang-library.yang
+  pyang -f tree --tree-line-length 50 ietf-yang-library.yang
 
 When a tree diagram is included as a figure in an Internet Draft or
 RFC, "--tree-line-length 69" works well.
+
+** Large Diagrams
+
+If the complete tree diagram for a module becomes too large (spans
+several pages), the diagram can be split into several smaller
+diagrams.  For example, it might be possible to have one diagram with
+the data node and another with all notifications.  If the data nodes
+tree is too large, it might be possible to split the diagram into
+smaller diagrams for different subtrees.
+
+An example of such a split can be found in ^RFC7407^, where section
+2.4 shows the diagram for "engine configuration":
+
+      +--rw snmp
+         +--rw engine
+            // more parameters from the "engine" subtree here
+
+Further, section 2.5 shows the diagram for "target configuration":
+
+      +--rw snmp
+         +--rw target* [name]
+            // more parameters from the "target" subtree here
+
+The previously mentioned "pyang" command can be helpful in producing
+such output, for example the above example was produced using:
+
+  pyang -f tree --tree-path /snmp/target ietf-snmp.yang
+
 
 * YANG Schema Mount Tree Diagrams
 
