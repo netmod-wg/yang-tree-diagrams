@@ -7,7 +7,7 @@ based on the evolution of the YANG language.
 
 * Introduction
 
-YANG Tree Diagrams were first published in ^RFC7223^.  Such diagrams
+YANG Tree Diagrams were first published in ^RFC6536^.  Such diagrams
 are commonly used to provided a simplified graphical representation of
 a data model and can be automatically generated via tools such as
 "pyang".  (See <https://github.com/mbj4668/pyang>).  This document
@@ -65,8 +65,8 @@ followed by one or more sections, in order:
 The relative organization of each section is provided using a text-based
 format that is typical of a file system directory tree display command.
 Each node in the tree is prefaces with "+--".  Schema nodes that are
-children of another node are offset from the parent by 3 spaces.  Schema
-peer nodes separated are listed with the same space offset and, when
+children of another node are offset from the parent by 3 spaces.
+Sibling schema nodes are listed with the same space offset and, when
 separated by lines, linked via a vertical bar ("|") character.
 
 The full format, including spacing conventions is:
@@ -142,7 +142,7 @@ structures may optionally be present in the "yang-data" section.
 ** Collapsed Node Representation
 
 At times when the composition of the nodes within a module schema are
-not important in the context of the presented tree, peer nodes and their
+not important in the context of the presented tree, sibling nodes and their
 children can be collapsed using the notation "..." in place of the
 text lines used to represent the summarized nodes.  For example:
 
@@ -259,12 +259,11 @@ such output, for example the above example was produced using:
 
   pyang -f tree --tree-path /snmp/target ietf-snmp.yang
 
-
 * YANG Schema Mount Tree Diagrams
 
 YANG Schema Mount is defined in ^I-D.ietf-netmod-schema-mount^ and
 warrants some specific discussion. Schema mount is a generic mechanism
-that allows for mounting of one or more data modules at a specified
+that allows for mounting of one or more YANG  modules at a specified
 location of another (parent) schema. The specific location is referred
 to as a mount point, and any container or list node in a schema may
 serve as a mount point.  Mount points are identified via the inclusion
@@ -288,7 +287,7 @@ statement as part of its definition:
                +--:(vrf-root)
                |  +--mp vrf-root
 
-** Representation of Instance Data Trees
+** Representation of Mounted Data Trees
 
 The actual modules made available under a mount point is controlled by a
 server and is provided to clients.  This information is typically
@@ -315,7 +314,7 @@ diagrams.
 
 In such diagrams, the mount point should be treated much like a
 container that uses a grouping.  The flags should also be set based on
-the "config" leaf mentioned above, and the mount realted options
+the "config" leaf mentioned above, and the mount related options
 indicated above should be shown for the top level nodes in a mounted or
 referenced module.  The following example, taken from
 ^I-D.ietf-rtgwg-ni-model^, represents the prior example with YANG
@@ -361,9 +360,13 @@ data. This is determined by the "ietf-yang-schema-mount" module's
 "config" leaf associated with the specific mount point and is
 indicated on the top level mounted nodes. For example in the above
 tree, when the "config" for the routing module indicates false, the
-only change would be to the flag on the rt:routing node:
+nodes in the "rt:routing" subtree would have different flags:
 
-                     +--ro rt:routing/
+                    +--ro rt:routing/
+                    |  +--ro router-id?
+                    |  +--ro control-plane-protocols
+                       ...
+
 
 * IANA Considerations
 
