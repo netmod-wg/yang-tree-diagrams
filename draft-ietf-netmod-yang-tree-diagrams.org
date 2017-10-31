@@ -287,7 +287,7 @@ statement as part of its definition:
                +--:(vrf-root)
                |  +--mp vrf-root
 
-** Representation of Mounted Data Trees
+** Representation of Mounted Schema Trees
 
 The actual modules made available under a mount point is controlled by a
 server and is provided to clients.  This information is typically
@@ -366,7 +366,6 @@ nodes in the "rt:routing" subtree would have different flags:
                     |  +--ro router-id?
                     |  +--ro control-plane-protocols
                        ...
-
 
 * IANA Considerations
 
