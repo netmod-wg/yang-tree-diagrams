@@ -203,7 +203,10 @@ Each node in a YANG module is printed as:
 * Usage Guidelines For RFCs
 
 This section provides general guidelines related to the use of tree
-diagrams in RFCs.
+diagrams in RFCs. For the most current quidelines being developed,
+please see the IETF NetMod Working Group Wiki, see:
+
+  https://trac.ietf.org/trac/netmod/wiki/WikiStart
 
 ** Wrapping Long Lines
 
@@ -227,8 +230,17 @@ such output, for example the above example was produced using:
 When a tree diagram is included as a figure in an Internet Draft or
 RFC, "--tree-line-length 69" works well.
 
+** Groupings
+
+If the YANG module is comprised of groupings only, then the tree
+diagram should contain the groupings.  The 'pyang' compiler can be
+used to produce a tree diagram with groupings using the "-f tree
+--tree-print-groupings" command line parameters.
+
 ** Long Diagrams
 
+Tree diagrams can be split into sections to correspond to
+document structure.
 As tree diagrams are intended to provide a simplified view of a module,
 diagrams longer than a page should generally be avoided.
 If the complete tree diagram for a module becomes too long,

@@ -90,7 +90,7 @@ validate-ex-xml: ietf-origin.yang example-system.yang \
 	yang2dsdl -j -t data -v ex-oper.xml $< example-system.oper.yang
 
 ${references_xml}: ${references_src}
-	$(oxtradoc) -m mkback $< > $@
+	$(oxtradoc) -m  $< > $@
 
 ${output}.xml: ${draft} ${references_xml} $(trees) $(load) $(yang)
 	$(oxtradoc) -m outline-to-xml -n "${output}" $< > $@
