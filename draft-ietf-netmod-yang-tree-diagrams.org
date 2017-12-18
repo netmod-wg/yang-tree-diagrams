@@ -203,10 +203,7 @@ Each node in a YANG module is printed as:
 * Usage Guidelines For RFCs
 
 This section provides general guidelines related to the use of tree
-diagrams in RFCs. For the most current quidelines being developed,
-please see the IETF NetMod Working Group Wiki, see:
-
-  https://trac.ietf.org/trac/netmod/wiki/WikiStart
+diagrams in RFCs.
 
 ** Wrapping Long Lines
 
@@ -392,7 +389,7 @@ document.
 {{document:
     name ;
     ipr trust200902;
-    category std;
+    category bcp;
     references references.xml;
     title "YANG Tree Diagrams";
     abbreviation "YANG Tree Diagrams";
