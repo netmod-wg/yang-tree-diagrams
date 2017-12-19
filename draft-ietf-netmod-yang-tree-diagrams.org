@@ -129,8 +129,10 @@ submodule: <module-name>
 
 ** Groupings
 
-Nodes within a used grouping are expanded as if the nodes were defined
-at the location of the uses statement.
+Nodes within a used grouping are normally expanded as if the nodes
+were defined at the location of the "uses" statement.  However, it is
+also possible to not expand the "uses" statement, but instead print
+the name of the grouping.
 
 Groupings may optionally be present in the "groupings" section.
 
@@ -172,6 +174,7 @@ Each node in a YANG module is printed as:
     <flags> is one of:
       rw  for configuration data
       ro  for non-configuration data
+      -u  for uses of a grouping
       -x  for rpcs and actions
       -n  for notifications
       mp  for nodes containing a "mount-point" extension statment
@@ -231,8 +234,8 @@ RFC, "--tree-line-length 69" works well.
 
 If the YANG module is comprised of groupings only, then the tree
 diagram should contain the groupings.  The 'pyang' compiler can be
-used to produce a tree diagram with groupings using the "-f tree
---tree-print-groupings" command line parameters.
+used to produce a tree diagram with groupings using the
+"-f tree --tree-print-groupings" command line parameters.
 
 ** Long Diagrams
 
