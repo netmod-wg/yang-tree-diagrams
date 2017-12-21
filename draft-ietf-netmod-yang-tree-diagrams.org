@@ -196,9 +196,9 @@ Each node in a YANG module is printed as:
 
     <type> is the name of the type for leafs and leaf-lists
 
-      If the type is a leafref, the type is printed as "-> TARGET",
-      where TARGET is either the leafref path, with prefixes removed
-      if possible.
+      If the type is a leafref, the type is either printed as
+      "-> TARGET", where TARGET is the leafref path, with prefixes
+      removed if possible, or printed as "leafref".
 
     <if-features> is the list of features this node depends on,
       printed within curly brackets and a question mark "{...}?"
@@ -222,8 +222,15 @@ characters. For example:
        +--ro module-set-id
                -> /modules-state/module-set-id
 
+Long paths (e.g., leafref paths or augment targets) can be split and
+printed on more than one line.  For example:
+
+  augment /nat:nat/nat:instances/nat:instance/nat:mapping-table
+            /nat:mapping-entry:
+
 The previously mentioned "pyang" command can be helpful in producing
-such output, for example the above example was produced using:
+such output, for example the notification diagram above was produced
+using:
 
   pyang -f tree --tree-line-length 50 ietf-yang-library.yang
 
