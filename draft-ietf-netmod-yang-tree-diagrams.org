@@ -8,15 +8,15 @@ based on the evolution of the YANG language.
 * Introduction
 
 YANG Tree Diagrams were first published in ^RFC6536^.  Such diagrams
-are commonly used to provided a simplified graphical representation of
+are used to provided a simplified graphical representation of
 a data model and can be automatically generated via tools such as
 "pyang".  (See <https://github.com/mbj4668/pyang>).  This document
-provides the syntax used in YANG Tree Diagrams.  It is expected that
+describes the syntax used in YANG Tree Diagrams.  It is expected that
 this document will be updated or replaced as changes to the YANG
 language, see ^RFC7950^, necessitate.
 
-Today's common practice is include the definition of the syntax used
-to represent a YANG module in every document that provides a tree
+Today's common practice is to include the definition of the syntax
+used to represent a YANG module in every document that provides a tree
 diagram.  This practice has several disadvantages and the purpose of
 the document is to provide a single location for this definition.  It
 is not the intent of this document to restrict future changes, but
@@ -36,7 +36,7 @@ portion of which follows:
 
 * Tree Diagram Syntax
 
-This section provides the meaning of the symbols used in YANG Tree
+This section describes the meaning of the symbols used in YANG Tree
 diagrams.
 
 A full tree diagram of a module represents all elements.  It includes
@@ -48,7 +48,7 @@ document as a whole, by one or more sections, or even subsets of nodes.
 A module is identified by "module:" followed the module-name.  This is
 followed by one or more sections, in order:
 
-+ The top-level data nodes defined in the module, offset by 4 spaces.
++ The top-level data nodes defined in the module, offset by 2 spaces.
 + Augmentations, offset by 2 spaces and identified by the keyword
   "augment" followed by the augment target node and a colon (":")
   character.
@@ -71,7 +71,7 @@ separated by lines, linked via a vertical bar ("|") character.
 
 The full format, including spacing conventions is:
 
-module: <module-name>
+  module: <module-name>
     +--<node>
     |  +--<node>
     |     +--<node>
@@ -79,53 +79,53 @@ module: <module-name>
        +--<node>
           +--<node>
 
-  augment <target-node>:
-    +--<node>
-       +--<node>
-       +--<node>
-          +--<node>
-  augment <target-node>:
-    +--<node>
+    augment <target-node>:
+      +--<node>
+         +--<node>
+         +--<node>
+            +--<node>
+    augment <target-node>:
+      +--<node>
 
-  rpcs:
-    +--<rpc-node>
-    +--<rpc-node>
-       +--<node>
-       |  +--<node>
-       +--<node>
+    rpcs:
+      +--<rpc-node>
+      +--<rpc-node>
+         +--<node>
+         |  +--<node>
+         +--<node>
 
-  notifications:
-    +--<notification-node>
-    +--<notification-node>
-       +--<node>
-       |  +--<node>
-       +--<node>
+    notifications:
+      +--<notification-node>
+      +--<notification-node>
+         +--<node>
+         |  +--<node>
+         +--<node>
 
-  grouping <grouping-name>:
-    +--<node>
-       +--<node>
-       |  +--<node>
-       +--<node>
-  grouping <grouping-name>:
-    +--<node>
+    grouping <grouping-name>:
+      +--<node>
+         +--<node>
+         |  +--<node>
+         +--<node>
+    grouping <grouping-name>:
+      +--<node>
 
-  yang-data <yang-data-name>:
-    +--<node>
-       +--<node>
-       |  +--<node>
-       +--<node>
-  yang-data <yang-data-name>:
-    +--<node>
+    yang-data <yang-data-name>:
+      +--<node>
+         +--<node>
+         |  +--<node>
+         +--<node>
+    yang-data <yang-data-name>:
+      +--<node>
 
 ** Submodules
 
 Submodules are represented in the same fashion as modules, but are
 identified by "submodule:" followed the (sub)module-name.  For example:
 
-submodule: <module-name>
-  +--<node>
-  |  +--<node>
-  |     +--<node>
+  submodule: <module-name>
+    +--<node>
+    |  +--<node>
+    |     +--<node>
 
 ** Groupings
 
@@ -133,6 +133,20 @@ Nodes within a used grouping are normally expanded as if the nodes
 were defined at the location of the "uses" statement.  However, it is
 also possible to not expand the "uses" statement, but instead print
 the name of the grouping.
+
+For example, the following diagram shows the "tls-transport" grouping
+from ^RFC7407^ unexpanded:
+
+    +--rw tls
+       +---u tls-transport
+
+If the grouping is expanded, it could be printed as:
+
+    +--rw tls
+       +--rw port?                 inet:port-number
+       +--rw client-fingerprint?   x509c2n:tls-fingerprint
+       +--rw server-fingerprint?   x509c2n:tls-fingerprint
+       +--rw server-identity?      snmp:admin-string
 
 Groupings may optionally be present in the "groupings" section.
 
@@ -148,32 +162,33 @@ not important in the context of the presented tree, sibling nodes and their
 children can be collapsed using the notation "..." in place of the
 text lines used to represent the summarized nodes.  For example:
 
-  +--<node>
-  |  ...
-  +--<node>
-     +--<node>
-        +--<node>
+    +--<node>
+    |  ...
+    +--<node>
+       +--<node>
+          +--<node>
 
 ** Comments
 
-Single line comments, starting with "//" and ending at the end of the
-line, may be used in the tree notation.
+Single line comments, starting with "//" (possibly indented) and
+ending at the end of the line, may be used in the tree notation.
 
 ** Node Representation
 
 Each node in a YANG module is printed as:
 
-  <status> <flags> <name> <opts> <type> <if-features>
+  <status>--<flags> <name><opts> <type> <if-features>
 
     <status> is one of:
-
       +  for current
       x  for deprecated
       o  for obsolete
 
     <flags> is one of:
       rw  for configuration data
-      ro  for non-configuration data
+      ro  for non-configuration data, output parameters to rpcs
+          and actions, and notification parameters
+      -w  for input parameters to rpcs and actions
       -u  for uses of a grouping
       -x  for rpcs and actions
       -n  for notifications
@@ -184,7 +199,8 @@ Each node in a YANG module is printed as:
      :(<name>) means that the node is a case node
 
       If the node is augmented into the tree from another module,
-      its name is printed as <prefix>:<name>.
+      its name is printed as <prefix>:<name>, where <prefix> is the
+      prefix defined in the module where the node is defined.
 
     <opts> is one of:
       ?  for an optional leaf, choice, anydata or anyxml
@@ -203,6 +219,9 @@ Each node in a YANG module is printed as:
     <if-features> is the list of features this node depends on,
       printed within curly brackets and a question mark "{...}?"
 
+There may be any number of additional space characters between <opts>
+and <type>.
+
 * Usage Guidelines For RFCs
 
 This section provides general guidelines related to the use of tree
@@ -213,9 +232,9 @@ diagrams in RFCs.
 Internet Drafts and RFCs limit the number of characters that may in a
 line of text to 72 characters.  When the tree representation of a node
 results in line being longer than this limit the line should be broken
-between <opts> and <type>.  The type should be indented so that the new
-line starts below <name> with a white space offset of at least two
-characters. For example:
+between <opts> and <type>, or between <type> and <if-feature>.  The
+new line should be indented so that it starts below <name> with
+a white space offset of at least two characters. For example:
 
   notifications:
     +---n yang-library-change
@@ -263,15 +282,15 @@ in an appendix.
 An example of such a split can be found in ^RFC7407^, where section
 2.4 shows the diagram for "engine configuration":
 
-      +--rw snmp
-         +--rw engine
-            // more parameters from the "engine" subtree here
+    +--rw snmp
+       +--rw engine
+          // more parameters from the "engine" subtree here
 
 Further, section 2.5 shows the diagram for "target configuration":
 
-      +--rw snmp
-         +--rw target* [name]
-            // more parameters from the "target" subtree here
+    +--rw snmp
+       +--rw target* [name]
+          // more parameters from the "target" subtree here
 
 The previously mentioned "pyang" command can be helpful in producing
 such output, for example the above example was produced using:
@@ -295,16 +314,16 @@ In the following example taken from ^I-D.ietf-rtgwg-ni-model^,
 "vrf-root" is a container that includes the "mount-point" extension
 statement as part of its definition:
 
-    module: ietf-network-instance
-      +--rw network-instances
-         +--rw network-instance* [name]
-            +--rw name           string
-            +--rw enabled?       boolean
-            +--rw description?   string
-            +--rw (ni-type)?
-            +--rw (root-type)
-               +--:(vrf-root)
-               |  +--mp vrf-root
+  module: ietf-network-instance
+    +--rw network-instances
+       +--rw network-instance* [name]
+          +--rw name           string
+          +--rw enabled?       boolean
+          +--rw description?   string
+          +--rw (ni-type)?
+          +--rw (root-type)
+             +--:(vrf-root)
+             |  +--mp vrf-root
 
 ** Representation of Mounted Schema Trees
 
@@ -340,34 +359,34 @@ referenced module.  The following example, taken from
 Routing and OSPF modules mounted, YANG Interface module nodes accessible
 via a parent-reference, and "config" indicating true:
 
-   module: ietf-network-instance
-     +--rw network-instances
-        +--rw network-instance* [name]
-           +--rw name           string
-           +--rw enabled?       boolean
-           +--rw description?   string
-           +--rw (ni-type)?
-           +--rw (root-type)
-              +--:(vrf-root)
-                 +--mp vrf-root
-                    +--ro rt:routing-state/
-                    |  +--ro router-id?
-                    |  +--ro control-plane-protocols
-                    |     +--ro control-plane-protocol* [type name]
-                    |        +--ro ospf:ospf
-                    |           +--ro instance* [af]
-                    |           ...
-                    +--rw rt:routing/
-                    |  +--rw router-id?
-                    |  +--rw control-plane-protocols
-                    |     +--rw control-plane-protocol* [type name]
-                    |     +--rw ospf:ospf
-                    |        +--rw instance* [af]
-                    |           ...
-                    +--ro if:interfaces@
-                    |  ...
-                    +--ro if:interfaces-state@
-                    |  ...
+  module: ietf-network-instance
+    +--rw network-instances
+       +--rw network-instance* [name]
+          +--rw name           string
+          +--rw enabled?       boolean
+          +--rw description?   string
+          +--rw (ni-type)?
+          +--rw (root-type)
+             +--:(vrf-root)
+                +--mp vrf-root
+                   +--ro rt:routing-state/
+                   |  +--ro router-id?
+                   |  +--ro control-plane-protocols
+                   |     +--ro control-plane-protocol* [type name]
+                   |        +--ro ospf:ospf
+                   |           +--ro instance* [af]
+                   |           ...
+                   +--rw rt:routing/
+                   |  +--rw router-id?
+                   |  +--rw control-plane-protocols
+                   |     +--rw control-plane-protocol* [type name]
+                   |     +--rw ospf:ospf
+                   |        +--rw instance* [af]
+                   |           ...
+                   +--ro if:interfaces@
+                   |  ...
+                   +--ro if:interfaces-state@
+                   |  ...
 
 It is worth highlighting that the OSPF module augments the Routing
 module, and while it is listed in the Schema Mount module (or inline YANG
@@ -381,10 +400,10 @@ indicated on the top level mounted nodes. For example in the above
 tree, when the "config" for the routing module indicates false, the
 nodes in the "rt:routing" subtree would have different flags:
 
-                    +--ro rt:routing/
-                    |  +--ro router-id?
-                    |  +--ro control-plane-protocols
-                       ...
+                   +--ro rt:routing/
+                   |  +--ro router-id?
+                   |  +--ro control-plane-protocols
+                      ...
 
 * IANA Considerations
 
