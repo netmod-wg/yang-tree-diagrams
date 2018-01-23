@@ -219,8 +219,10 @@ Each node in a YANG module is printed as:
     <if-features> is the list of features this node depends on,
       printed within curly brackets and a question mark "{...}?"
 
-There may be any number of additional space characters between <opts>
-and <type>.
+Arbitrary whitespace is allowed between any of the whitespace
+separated fields (e.g., <opts> and <type>).  Additional whitespace may
+for example be used to column align fields (e.g., within a list or
+container) to improve readability.
 
 * Usage Guidelines For RFCs
 
