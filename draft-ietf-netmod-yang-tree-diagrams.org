@@ -192,7 +192,7 @@ Each node in a YANG module is printed as:
       -u  for uses of a grouping
       -x  for rpcs and actions
       -n  for notifications
-      mp  for nodes containing a "mount-point" extension statment
+      mp  for nodes containing a "mount-point" extension statement
 
     <name> is the name of the node
       (<name>) means that the node is a choice node
@@ -307,7 +307,7 @@ that allows for mounting of one or more YANG  modules at a specified
 location of another (parent) schema. The specific location is referred
 to as a mount point, and any container or list node in a schema may
 serve as a mount point.  Mount points are identified via the inclusion
-of the "mount-point" extension statement as a substament under a
+of the "mount-point" extension statement as a substatement under a
 container or list node. Mount point nodes are thus directly identified
 in a module schema definition and can be identified in a tree diagram
 as indicated above using the "mp" flag.
