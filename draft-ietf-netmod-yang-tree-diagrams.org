@@ -1,7 +1,7 @@
 # -*- org -*-
 
 This document captures the current syntax used in YANG module Tree
-Diagrams.  The purpose of the document is to provide a single location
+Diagrams.  The purpose of this document is to provide a single location
 for this definition.  This syntax may be updated from time to time
 based on the evolution of the YANG language.
 
@@ -18,7 +18,7 @@ language, see ^RFC7950^, necessitate.
 Today's common practice is to include the definition of the syntax
 used to represent a YANG module in every document that provides a tree
 diagram.  This practice has several disadvantages and the purpose of
-the document is to provide a single location for this definition.  It
+this document is to provide a single location for this definition.  It
 is not the intent of this document to restrict future changes, but
 rather to ensure such changes are easily identified and suitably
 agreed upon.
